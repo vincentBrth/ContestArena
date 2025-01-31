@@ -1,3 +1,5 @@
+import firebaseConfig from './firebaseConfig';
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -19,7 +21,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
-      { rel: "stylesheet", href: "http://fonts.googleapis.com/css?family=Poppins" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Poppins&display=swap", type: "text/css" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" }
     ]
   },
@@ -45,6 +47,7 @@ export default {
   modules: [
     '@nuxtjs/firebase',
     '@nuxtjs/toast',
+    'nuxt-vue-multiselect',
   ],
 
   toast: {
@@ -52,24 +55,10 @@ export default {
   },
 
   firebase: {
-    config: {
-      apiKey: "AIzaSyDCVsnmc8cBxqFeRM844ej0g-M0MyM9of0",
-      authDomain: "contestarena-5c70a.firebaseapp.com",
-      databaseURL: "https://contestarena-5c70a-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "contestarena-5c70a",
-      storageBucket: "contestarena-5c70a.appspot.com",
-      messagingSenderId: "429075200533",
-      appId: "1:429075200533:web:048988ab861b7e84726c1c",
-      measurementId: "G-GT0LE2P4H1"
-    },
+    config: firebaseConfig, // firebaseConfig.js
     services: {
       auth: {
         persistence: 'local', // default
-        initialize: {
-          onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
-          onAuthStateChangedAction: 'onAuthStateChangedAction',
-          subscribeManually: false
-        },
       },
       storage: true,
       database: true,

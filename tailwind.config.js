@@ -10,54 +10,82 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Defaults
+        'default': {
+          lightest: '#f5f5f5',
+          light: '##556167',
+          DEFAULT: '#353535',
+          dark: '#202020',
+          darkest: '#050505',
+        },
+
         // Neutrals
-        'neutral-lightest': '#f1f5fa',
-        'neutral-light': '#b9c6d7',
-        'neutral': '#859bb9',
-        'neutral-dark': '#4c6688',
-        'neutral-darkest': '#1e3c63',
+        'neutral': {
+          lightest: '#f1f5fa',
+          light: '#b9c6d7',
+          DEFAULT: '#859bb9',
+          dark: '#4c6688',
+          darkest: '#1e3c63',
+        },
+
         // Dangers
-        'danger-lightest': '#ffe4e5',
-        'danger-light': '#ff747a',
-        'danger': '#d11018',
-        'danger-dark': '#bb171b',
-        'danger-darkest': '#962123',
-        // Warning
-        'warning-lightest': '#fff1c8',
-        'warning-light': '#fbd579',
-        'warning': '#f6bd41',
-        'warning-dark': '#ce8d18',
-        'warning-darkest': '#9e5e00',
-        // Info
-        'info-lightest': '#e3f1ff',
-        'info-light': '#64b2f5',
-        'info': '#1991eb',
-        'info-dark': '#1d67b9',
-        'info-darkest': '#234987',
+        'danger': {
+          lightest: '#ffe4e5',
+          light: '#ff747a',
+          DEFAULT: '#d11018',
+          dark: '#bb171b',
+          darkest: '#962123',
+        },
+
+        // Warnings
+        'warning': {
+          lightest: '#fff1c8',
+          light: '#fbd579',
+          DEFAULT: '#f6bd41',
+          dark: '#ce8d18',
+          darkest: '#9e5e00',
+        },
+
+        // Infos
+        'info': {
+          lightest: '#e3f1ff',
+          light: '#64b2f5',
+          DEFAULT: '#1991eb',
+          dark: '#1d67b9',
+          darkest: '#234987',
+        },
         // Success
-        'success-lightest': '#e6fff4',
-        'success-light': '#7be3bc',
-        'success': '#00cd85',
-        'success-dark': '#0b8e5f',
-        'success-darkest': '#016b42',
+        'success': {
+          lightest: '#e6fff4',
+          light: '#7be3bc',
+          DEFAULT: '#00cd85',
+          dark: '#0b8e5f',
+          darkest: '#016b42',
+        },
         // Paris
-        'paris-lightest': '#a7a5c9',
-        'paris-light': '#575493',
-        'paris': '#2c275f',
-        'paris-dark': '#09072e',
-        'paris-darkest': '#030322',
-        // Linen
-        'linen-lightest': '#fdfaf7',
-        'linen-light': '#faf5ef',
-        'linen': '#f7efe5',
-        'linen-dark': '#f4e9da',
-        'linen-darkest': '#f0dcc3',
-        // Purple rain
-        'purple-rain-lightest': '#edebff',
-        'purple-rain-light': '#b9b6f1',
-        'purple-rain': '#8282dc',
-        'purple-rain-dark': '#5745b1',
-        'purple-rain-darkest': '#381c80',
+        'paris': {
+          lightest: '#a7a5c9',
+          light: '#575493',
+          DEFAULT: '#2c275f',
+          dark: '#09072e',
+          darkest: '#030322',
+        },
+        // Linens
+        'linen': {
+          lightest: '#fdfaf7',
+          light: '#faf5ef',
+          DEFAULT: '#f7efe5',
+          dark: '#f4e9da',
+          darkest: '#f0dcc3',
+        },
+        // Purples rain
+        'purple-rain': {
+          lightest: '#edebff',
+          light: '#b9b6f1',
+          DEFAULT: '#8282dc',
+          dark: '#5745b1',
+          darkest: '#381c80',
+        },
       },
     },
   },

@@ -5,17 +5,17 @@
 
 ## Abstract
 
-Contest with your friends.
+Contest with your friends in realtime !
 
-**v0.0.0 is a poc and need refactoring**
-## Dev
-### Local
+UX design, backlog and some notes can be found this page : [Notion - ContestArena](https://www.notion.so/Contests-web-app-0dc468f507f84c118e246de4607b8236?pvs=4)
 
-```
-npx run dev
-```
-Use firebase emulator for development purpose
-### Deployment
-```
-firebase deploy --only hosting:<firebase_hosting>
-```
+## Snapshots
+
+| ![](./docs/home.jpg) | ![](./docs/login.jpg) | ![](./docs/profile.jpg) |
+| ------- | ------- | ------- |
+|Home| Login| Profile|
+| ![](./docs/choices.jpg) | ![](./docs/ranking.jpg) | ![](./docs/info.jpg) |
+|Choices|Ranking|Info|
+| ![](./docs/admin.jpg) | ![](./docs/voting.jpg) | ![](./docs/other.jpg) |
+|Admin|Voting|Other event|
+

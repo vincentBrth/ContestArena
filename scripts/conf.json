@@ -1,0 +1,185 @@
+{
+    "missfrance": {
+        "rounds": [
+            {
+                "max": 15,
+                "name": "Top 15",
+                "points": 1
+            },
+            {
+                "max": 5,
+                "name": "Top 5",
+                "points": 3
+            },
+            {
+                "max": 1,
+                "name": "Top 1",
+                "points": 5
+            }
+        ],
+        "pool": {
+            "Alsace": {},
+            "Aquitaine": {},
+            "Auvergne": {},
+            "Bourgogne": {},
+            "Bretagne": {},
+            "Centre-Val de Loire": {},
+            "Champagne-Ardenne": {},
+            "Corse": {},
+            "Côte d'Azur": {},
+            "Franche-Comté": {},
+            "Guadeloupe": {},
+            "Guyane": {},
+            "Ile-de-France": {},
+            "Languedoc": {},
+            "Limousin": {},
+            "Lorraine": {},
+            "Martinique": {},
+            "Mayotte": {},
+            "Midi-Pyrénées": {},
+            "Nord-Pas-de-Calais": {},
+            "Normandie": {},
+            "Nouvelle-Calédonie": {},
+            "Pays de la Loire": {},
+            "Picardie": {},
+            "Poitou-Charentes": {},
+            "Provence": {},
+            "Réunion": {},
+            "Rhône-Alpes": {},
+            "Roussillon": {},
+            "Tahiti": {}
+        }
+    },
+    "eurovision": {
+        "rounds": [
+            {
+                "max": 10,
+                "name": "Top 10",
+                "points": 5
+            },
+            {
+                "max": 5,
+                "name": "Top 5",
+                "points": 10
+            },
+            {
+                "max": 1,
+                "name": "Top 1",
+                "points": 50
+            }
+        ],
+        "pool": {
+            "Albania": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FAL.svg?alt=media&token=8076e5d5-a3ed-472d-963e-fe0f552e1808"
+            },
+            "Armenia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FAM.svg?alt=media&token=889c7932-50bf-4a1c-8467-c33f35430660"
+            },
+            "Australia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FAU.svg?alt=media&token=9d98e4cb-93c7-4651-8a53-8aa58592106d"
+            },
+            "Austria": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FAT.svg?alt=media&token=b2a1fd50-b432-4430-a2f5-79f6347d500e"
+            },
+            "Azerbaïjan": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FAZ.svg?alt=media&token=982c77f3-5891-4e9d-8497-0ae69a963e19"
+            },
+            "Belgium": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FBE.svg?alt=media&token=61b9e4e7-08bb-47ca-9c28-c869889d876f"
+            },
+            "Croatia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FHR.svg?alt=media&token=b29f21eb-49fa-46fd-bcb9-d337112ee524"
+            },
+            "Cyprus": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FCY.svg?alt=media&token=52b19fe0-0bad-4e63-bb0b-410171ab1109"
+            },
+            "Czechia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FCZ.svg?alt=media&token=620c3ca1-d642-4482-87e6-bb9e35546dbb"
+            },
+            "Denmark": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FDK.svg?alt=media&token=93d33ff0-613f-4457-b8cb-4c9594b17855"
+            },
+            "Estonia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FEE.svg?alt=media&token=64795be9-f953-4775-b8ef-a6397cf1aa1b"
+            },
+            "Finland": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FFL.svg?alt=media&token=6c085efa-226a-4bfa-a266-cfd3b0cb0f6b"
+            },
+            "France": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FFR.svg?alt=media&token=d2a6e5c2-9aa2-452e-809b-37194e959c48"
+            },
+            "Georgia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FGE.svg?alt=media&token=8f967ceb-045d-4e4b-9d65-91996467bc4a"
+            },
+            "Germany": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FDE.svg?alt=media&token=c60e7ee5-46bf-499b-b709-7a49e1ce1aef"
+            },
+            "Greece": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FGR.svg?alt=media&token=9d2ffaf8-05a9-4ea1-8d89-1aa4d6bf9bb0"
+            },
+            "Iceland": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FIS.svg?alt=media&token=5e141708-4d5b-4c75-a28b-974d6015f672"
+            },
+            "Ireland": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FIE.svg?alt=media&token=b5fd4fb2-b101-4d7e-9843-1e4ebfbc3b21"
+            },
+            "Israel": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FIL.svg?alt=media&token=2abf0591-9f27-426a-980e-e5ed34a61dca"
+            },
+            "Italy": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FIT.svg?alt=media&token=1558a553-2b71-430d-b9cd-57a782aa1e1c"
+            },
+            "Latvia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FLV.svg?alt=media&token=c224393f-7971-4b31-ad86-f2d07625723d"
+            },
+            "Lithuania": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FLT.svg?alt=media&token=7a4a7ef3-dac9-41e4-9bbe-0a4439757eed"
+            },
+            "Malta": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FMT.svg?alt=media&token=b50c86c1-6782-41e1-9f12-26d5aa1f023b"
+            },
+            "Moldova": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FMD.svg?alt=media&token=f6605185-b7c4-4dc1-8d98-21fa9fdd4fa1"
+            },
+            "Netherlands": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FNL.svg?alt=media&token=e94f7054-6283-4793-8719-57afac534acd"
+            },
+            "Norway": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FNO.svg?alt=media&token=341ca2de-45f1-416c-af08-1bff8ccac430"
+            },
+            "Poland": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FPL.svg?alt=media&token=8f7ee7d8-44ad-4c57-848c-8881c57d814d"
+            },
+            "Portugal": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FPT.svg?alt=media&token=776ab4ee-9111-48ef-a772-160e6beb1036"
+            },
+            "Romania": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FRO.svg?alt=media&token=7372fd09-4b3c-4de4-a090-333d90297f93"
+            },
+            "San Marino": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FSM.svg?alt=media&token=094c7848-2c22-47f8-bc75-2663387237ef"
+            },
+            "Serbia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FSM.svg?alt=media&token=094c7848-2c22-47f8-bc75-2663387237ef"
+            },
+            "Slovenia": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FSL.svg?alt=media&token=3c410e69-41f4-46ef-8042-784ac775fc55"
+            },
+            "Spain": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FES.svg?alt=media&token=b9c14d89-d39c-4b37-be38-20687be3aa5d"
+            },
+            "Sweden": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FSE.svg?alt=media&token=3b0b7066-41a9-48ea-b96f-77e10eb02873"
+            },
+            "Switzerland": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FCH.svg?alt=media&token=cdde5113-5e3d-4325-ba5f-9798bfd03634"
+            },
+            "Ukraine": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FUA.svg?alt=media&token=e497076d-61ef-4ff1-ad8a-2ea858154e69"
+            },
+            "United Kingdon": {
+                "title_img": "https://firebasestorage.googleapis.com/v0/b/contestarena-5c70a.appspot.com/o/template%2Feurovision_countries%2FGB.svg?alt=media&token=e1158f60-f88b-4187-bebb-680a5b195095"
+            }
+        }
+    }
+}
