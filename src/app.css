@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary-color: #00ff00;
+    --secondary-color: #151515;
+}
+
+html,
+body {
+  background-color:var(--secondary-color);
+  color: white;
+  font-family: "Quicksand", sans-serif;
+}
+
+a {
+  color: var(--primary-color);
+}
+
+a:visited {
+    color: #02a002
+  }
+  
+a:hover{
+    color: #99ff99
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color:var(--primary-color);
+}
+
+
+
+/*
+    Section
+*/
+section {
+    background-color: #222;
+    width: 100%;
+    padding: 2rem;
+    border-radius: 0.25rem;
+    --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+/*
+    Input
+*/
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    position: relative;
+    width: 100%;
+    background: #333;
+    border: none;
+    outline: none;
+    padding: 25px 10px 7.5px;
+    border-radius: 4px;
+    color: #ffffffaf;
+    font-weight: 500;
+    font-size: 1em;
+}
+
+input:focus {
+    color: #fff;
+}
+
+input[type="submit"],
+input[type="button"],
+button {
+    padding: 10px;
+    background: #0f0;
+    color: #000;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+}
+
+
+button:disabled{
+    background: #333;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+input[type="submit"]:not(:disabled):active,
+input[type="submit"]:not(:disabled):hover,
+input[type="button"]:not(:disabled):active,
+input[type="button"]:not(:disabled):hover,
+button:not(:disabled):active,
+button:not(:disabled):hover {
+    opacity: 0.6;
+}

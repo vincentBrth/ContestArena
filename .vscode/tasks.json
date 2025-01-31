@@ -2,59 +2,18 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "Run Dev Server",
 			"type": "npm",
 			"script": "dev",
-			"problemMatcher": [],
-			"label": "yarn: dev",
-			"detail": "nuxt",
-			"options": {
-				"env": {
-					"NODE_OPTIONS": "--openssl-legacy-provider"
-				}
-			}
+			"problemMatcher": []
 		},
 		{
-			"type": "npm",
-			"script": "build",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "yarn: build",
-			"detail": "nuxt build",
-			"options": {
-				"env": {
-					"NODE_OPTIONS": "--openssl-legacy-provider"
-				}
-			}
-		},
-		{
-			"type": "npm",
-			"script": "generate",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "yarn: generate",
-			"detail": "nuxt generate",
-			"options": {
-				"env": {
-					"NODE_OPTIONS": "--openssl-legacy-provider"
-				}
-			}
-		},
-		{
+			"label": "Deploy to Production",
 			"type": "shell",
-			"command": "firebase deploy --only hosting:contestarena",
+			"command": "npm run build && firebase deploy",
 			"group": "build",
 			"problemMatcher": [],
-			"label": "firebase: deploy",
 			"detail": "firebase deploy"
-		},
-		{
-			"label": "Release",
-			"dependsOrder": "sequence",
-			"dependsOn": [
-				"yarn: build",
-				"yarn: generate",
-				"firebase deploy"
-			]
 		},
 	]
 }

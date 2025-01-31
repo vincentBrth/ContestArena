@@ -1,4 +1,0 @@
-pillow
-fuzzywuzzy
-python-Levenshtein
-firebase-admin
