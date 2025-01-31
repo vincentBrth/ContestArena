@@ -1,7 +1,7 @@
 # ContestArena
 
-[![License](https://img.shields.io/github/license/RealVincentBerthet/contestArena?style=flat-square)](https://opensource.org/licenses/MIT)
-[![GitHub version](https://img.shields.io/github/v/tag/RealVincentBerthet/contestArena?color=brightgreen&include_prereleases&label=version&style=flat-square)](https://badge.fury.io/gh/RealVincentBerthet%2FcontestArena)
+[![License](https://img.shields.io/github/license/vincentBrth/contestArena?style=flat-square)](https://opensource.org/licenses/MIT)
+[![GitHub version](https://img.shields.io/github/v/tag/vincentBrth/contestArena?color=brightgreen&include_prereleases&label=version&style=flat-square)](https://badge.fury.io/gh/vincentBrth%2FcontestArena)
 
 ## Abstract
 

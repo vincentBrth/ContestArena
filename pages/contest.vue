@@ -3,13 +3,13 @@
     data.settings &&
     data.settings.info &&
     (data.settings.enabled || _admin)
-    ">
+  ">
     <NavBar :title="title" :theme_bg="theme.bg.lightest"></NavBar>
     <!-- password -->
     <div v-if="data.settings.password &&
       $store.getters['event/password'] != data.settings.password &&
       !_admin
-      " class="mt-16 w-full max-w-lg items-center mx-auto">
+    " class="mt-16 w-full max-w-lg items-center mx-auto">
       <span class="material-symbols-outlined text-center w-full text-9xl" :class="[theme.text.lightest]">
         lock
       </span>
@@ -34,23 +34,26 @@
           <!-- round selection -->
           <div class="block fixed inset-x-0 top-14 z-10" :class="theme.bg.lightest">
             <NavSubBar :modelValue="round" @update:modelValue="(v) => (round = v)" :tabs="_tabs_rounds"
-              :theme_active="theme.bg.dark" :theme_inactive="theme.bg.light" :theme_text="theme.text.default"></NavSubBar>
+              :theme_active="theme.bg.dark" :theme_inactive="theme.bg.light" :theme_text="theme.text.default">
+            </NavSubBar>
           </div>
           <!-- cards -->
           <div class="flex flex-wrap justify-center gap-4 mb-20 mt-32 w-full">
             <ContestCard v-for="(candidate, key) in data &&
-                data.settings &&
-                data.settings.base_pool
-                ? data.settings.base_pool
-                : {}" v-if="event_pool.includes(key)" :key="key" :id="key" :title="key"
+              data.settings &&
+              data.settings.base_pool
+              ? data.settings.base_pool
+              : {}" v-if="event_pool.includes(key)" :key="key" :id="key" :title="key"
               :title_img="candidate.title_img ? candidate.title_img : ''" :subtitle="candidate.subtitle.length
-                  ? `${candidate.title} | ${candidate.subtitle}`
-                  : candidate.title
-                " :link="candidate.link" :asset="candidate.asset[data.settings.asset_in_use ? data.settings.asset_in_use : 0]" :abstract="candidate.abstract" :voting="((!event_round.locked && !event_qualified.length) ||
-      _admin_on) &&
-    event_pool.includes(key)
-    " :liked="_is_watchable ? _likes.includes(key) : false" :qualified="event_qualified.includes(key)" :theme_default="theme.bg.light"
-              :theme_text="theme.text.default" :theme_subtext="theme.text.lightest"
+                ? `${candidate.title} | ${candidate.subtitle}`
+                : candidate.title
+                " :link="candidate.link"
+              :asset="candidate.asset[data.settings.asset_in_use ? data.settings.asset_in_use : 0]"
+              :abstract="candidate.abstract" :voting="((!event_round.locked && !event_qualified.length) ||
+                _admin_on) &&
+                event_pool.includes(key)
+                " :liked="_is_watchable ? _likes.includes(key) : false" :qualified="event_qualified.includes(key)"
+              :theme_default="theme.bg.light" :theme_text="theme.text.default" :theme_subtext="theme.text.lightest"
               theme_img="object-cover h-[360px] w-[360px]" @action:vote="(v) => vote(v)"></ContestCard>
           </div>
         </section>
@@ -68,13 +71,14 @@
               :theme_odd="theme.bg.light" :theme_even="theme.bg.lightest" :theme_text="theme.text.default">
             </ContestRanking>
           </div>
-          <div v-else-if="subtab === 'advanced'"  class="flex flex-wrap justify-center gap-4 my-16 w-full">
-            <ContestRankingAdvanced :pool="event_pool_all" :tabs="_tabs_rounds" :rounds="event_rounds" :players="event_players" :filters="_ranking_filters"
-                :modelValue="$store.getters['event/ranking_filter'] ? $store.getters['event/ranking_filter'] : []"
-                @update:modelValue="(v) => $store.commit('event/setRankingFilter', v)"
-                :theme_active="theme.bg.dark" :theme_inactive="theme.bg.light"
-                :theme_odd="theme.bg.light" :theme_even="theme.bg.lightest" :theme_text="theme.text.default"
-                :asset_in_use="data.settings.asset_in_use ? data.settings.asset_in_use : 0">
+          <div v-else-if="subtab === 'advanced'" class="flex flex-wrap justify-center gap-4 my-16 w-full">
+            <ContestRankingAdvanced :pool="event_pool_all" :tabs="_tabs_rounds" :rounds="event_rounds"
+              :players="event_players" :filters="_ranking_filters"
+              :modelValue="$store.getters['event/ranking_filter'] ? $store.getters['event/ranking_filter'] : []"
+              @update:modelValue="(v) => $store.commit('event/setRankingFilter', v)" :theme_active="theme.bg.dark"
+              :theme_inactive="theme.bg.light" :theme_odd="theme.bg.light" :theme_even="theme.bg.lightest"
+              :theme_text="theme.text.default"
+              :asset_in_use="data.settings.asset_in_use ? data.settings.asset_in_use : 0">
             </ContestRankingAdvanced>
           </div>
         </section>
@@ -83,6 +87,14 @@
           <div>
             <ContestRules :rounds="event_rounds" :theme="data.settings.theme" :theme_text="theme.text.default">
             </ContestRules>
+          </div>
+        </section>
+        <!-- bingo -->
+        <section v-else-if="tab === 'bingo'" class="mt-32">
+          <div>
+            <ContestBingo :bingo="_bingo" :user_id="user_id" @action:check="(id) => bingoCheck(id)"
+              @action:generate="bingoGenerate()">
+            </ContestBingo>
           </div>
         </section>
         <!-- admin -->
@@ -95,13 +107,13 @@
             <ContestManagement :data="data" :theme_bg="theme.bg.default" :theme_text="theme.text.default"
               :theme_border="theme.border.default" :theme_odd="theme.bg.default" :theme_even="theme.bg.lightest"
               @action:update="(v) =>
-                  update(
-                    v.endpoint,
-                    v.value,
-                    v.admin ? v.admin : false,
-                    v.numberify ? v.numberify : false,
-                    v.confirm ? v.confirm : ''
-                  )
+                update(
+                  v.endpoint,
+                  v.value,
+                  v.admin ? v.admin : false,
+                  v.numberify ? v.numberify : false,
+                  v.confirm ? v.confirm : ''
+                )
                 "></ContestManagement>
           </div>
         </section>
@@ -121,7 +133,8 @@
       <div class="pt-16">
         <!-- Navigation bottom bar-->
         <NavBottomBar :modelValue="tab" @update:modelValue="(v) => (tab = v)" :progress="_progress" :tabs="_tabs"
-          :theme_bg="theme.bg.default" :theme_active="theme.bg.lightest" :theme_text="theme.text.default"></NavBottomBar>
+          :theme_bg="theme.bg.default" :theme_active="theme.bg.lightest" :theme_text="theme.text.default">
+        </NavBottomBar>
       </div>
     </div>
   </div>
@@ -162,7 +175,7 @@ export default {
   },
   watch: {
     tab(new_tab, old_tab) {
-      if (old_tab === "watching") {
+      if (!["watching", "bingo"].includes(new_tab)) {
         this._watching = {};
       }
     },
@@ -211,6 +224,7 @@ export default {
             icon: "military_tech",
             active: this._watching,
           },
+          bingo: { icon: "table_edit", active: this.data.event && this.data.event.bingo },
           rules: { icon: "info", active: true },
           admin: {
             icon: "admin_panel_settings",
@@ -237,7 +251,7 @@ export default {
     },
     _tabs_ranking: {
       get() {
-        let ret = { ranks: {name:"ranks"}, advanced: {name:"advanced"} };
+        let ret = { ranks: { name: "ranks" }, advanced: { name: "advanced" } };
 
         return ret;
       },
@@ -246,14 +260,12 @@ export default {
       get() {
         let ret = [];
 
-        if (["choices", "ranking", "watching"].includes(this.tab)) {
-          if (this._admin_on) {
-            ret.push({
-              msg: "Administrator is used",
-              type: "alert",
-              id: "admin",
-            });
-          }
+        if (this._admin_on) {
+          ret.push({
+            msg: "Administrator is used",
+            type: "alert",
+            id: "admin",
+          });
         }
 
         if (["choices"].includes(this.tab)) {
@@ -279,13 +291,11 @@ export default {
           }
         }
 
-        if (["watching"].includes(this.tab)) {
-          if (this._watching) {
-            if (this.event_round && this.event_round.watch) {
-              ret.push({ msg: `Watching as ${this.watching.name}`, id: "watch" });
-            } else {
-              ret.push({ msg: "Round is not watchable", id: "watch"});
-            }
+        if (this._watching) {
+          if (["watching", "bingo"].includes(this.tab)) {
+            ret.push({ msg: `Watching as ${this.watching.name}`, id: "watch" });
+          } else {
+            ret.push({ msg: "Not watchable", id: "watch" });
           }
         }
 
@@ -308,8 +318,10 @@ export default {
       set(value) {
         if (value.id) {
           if (value.id === "watch") {
-            this._watching = "";
-            this.tab = "ranking";
+            this._watching = {};
+            if (this.tab === "watching") {
+              this.tab = "ranking";
+            }
           } else if (value.id === "admin") {
             this._admin_on = false;
           }
@@ -351,7 +363,7 @@ export default {
       },
       set(value) {
         const is_me = this.$fire.auth.currentUser ? this.$fire.auth.currentUser.uid == value.uid : false;
-        if(!is_me || this._admin_on) {
+        if (!is_me || this._admin_on) {
           this.watching = value;
           if (this._watching) {
             this.tab = "watching";
@@ -398,6 +410,50 @@ export default {
           }
         }
         return likes;
+      },
+    },
+    _bingo_data: {
+      get() {
+        let bingo_data = {}
+        if (this.data && this.data.event && this.data.event.bingo && this.data.event.bingo.words) {
+          for (let key in this.data.event.bingo.words) {
+            bingo_data[key] = this.data.event.bingo.words[key];
+            bingo_data[key].voter = {};
+          }
+        }
+
+        // Push voter
+        Object.keys(this.event_players).forEach((key) => {
+          const player = this.event_players[key];
+          if (player.bingo && player.bingo.words) {
+            for (let word in player.bingo.words) {
+              bingo_data[word].voter[key] = { checked: player.bingo.words[word].checked };
+            }
+          }
+        });
+
+        return bingo_data
+      },
+    },
+    _bingo: {
+      get() {
+        let bingo = {}
+        let uid = this._watching
+          ? this.watching.uid
+          : this.$fire.auth.currentUser ? this.$fire.auth.currentUser.uid : null;
+        if (uid != null) {
+          if (this._admin_on) {
+            bingo = this._bingo_data;
+          } else if (this.event_players && this.event_players[uid] && this.event_players[uid].bingo) {
+            Object.keys(this._bingo_data).forEach((key) => {
+              if (this.event_players[uid].bingo.words[key]) {
+                bingo[key] = this._bingo_data[key];
+              }
+            });
+          }
+        }
+
+        return bingo;
       },
     },
     _ranking_filters: {
@@ -457,6 +513,13 @@ export default {
           });
         }
         return options;
+      },
+    },
+    user_id: {
+      get() {
+        if (this._watching) return this.watching.uid
+        if (this.$fire.auth.currentUser && !this._admin_on) return this.$fire.auth.currentUser.uid
+        return ""
       },
     },
     event_rounds: {
@@ -655,6 +718,125 @@ export default {
               msg: e,
               type: "error",
             });
+          }
+        }
+      } else {
+        toasts.push({
+          msg: "You need to be&nbsp;<a href='/identification' style='text-decoration: underline;'>logged</a>",
+        });
+      }
+
+      toasts.forEach((toast) => {
+        this.$toast.show(toast.msg, {
+          duration: toast.duration ? toast.duration : 1500,
+          type: toast.type,
+          className: "toast-theme",
+        });
+      });
+    },
+    bingoCheck(id) {
+      let toasts = [];
+
+      if (this.$fire.auth.currentUser) {
+        let endpoints = [];
+        if (this._admin_on) {
+          if (!this._watching) {
+            endpoints.push(
+              `${this.endpoint}/event/bingo/words/${id}/checked`
+            );
+          } else {
+            endpoints.push(
+              `${this.endpoint}/event/players/${this.watching.uid}/bingo/words/${id}/checked`
+            );
+          }
+        } else if (!this._watching) {
+          this.$fire.database
+            .ref(
+              `${this.endpoint}/event/players/${this.$fire.auth.currentUser.uid}/user_info`
+            )
+            .set(this.$store.getters["user/getUser"]);
+          endpoints.push(
+            `${this.endpoint}/event/players/${this.$fire.auth.currentUser.uid}/bingo/words/${id}/checked`
+          );
+        }
+        if (endpoints.length > 0) {
+          try {
+            // update database
+            if (toasts.length < 1) {
+              let values = this.user_id ? !this._bingo[id].voter[this.user_id].checked : !this._bingo[id].checked;
+              endpoints.forEach((e) => {
+                this.$fire.database.ref(e).set(values);
+              });
+            }
+          } catch (e) {
+            toasts.push({
+              msg: e,
+              type: "error",
+            });
+          }
+        }
+      }
+
+      toasts.forEach((toast) => {
+        this.$toast.show(toast.msg, {
+          duration: toast.duration ? toast.duration : 1500,
+          type: toast.type,
+          className: "toast-theme",
+        });
+      });
+    },
+    bingoGenerate() {
+      let toasts = [];
+
+      if (this.$fire.auth.currentUser) {
+        if (!this._admin_on) {
+          let endpoints = [];
+          if (!this._watching) {
+            this.$fire.database
+              .ref(
+                `${this.endpoint}/event/players/${this.$fire.auth.currentUser.uid}/user_info`
+              )
+              .set(this.$store.getters["user/getUser"]);
+            endpoints.push(
+              `${this.endpoint}/event/players/${this.$fire.auth.currentUser.uid}/bingo/`
+            );
+          }
+          if (this.data.event.bingo.words.length <= this.data.event.bingo.size) {
+            toasts.push({
+              msg: `Not enough words to generate a bingo grid`,
+              type: "error",
+            });
+          }
+
+          if (endpoints.length > 0) {
+            try {
+              // update database
+              if (toasts.length < 1) {
+                let values = {
+                  words: {},
+                };
+                // generate bingo grid
+
+                while (Object.keys(values.words).length < this.data.event.bingo.size) {
+                  // generate a number between 0 and the number of words
+                  let index = Math.floor(Math.random() * Object.keys(this.data.event.bingo.words).length);
+                  // pick index in dict key
+                  let key = Object.keys(this.data.event.bingo.words)[index];
+                  values.words[key] = {
+                    checked: false,
+                  };
+                }
+                endpoints.forEach((e) => {
+                  this.$fire.database.ref(e).set(values);
+                });
+              }
+
+            } catch (e) {
+              toasts.push({
+                msg: e,
+                type: "error",
+              });
+            }
           }
         }
       } else {

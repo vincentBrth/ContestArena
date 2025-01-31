@@ -13,7 +13,7 @@
     </div>
     <!-- Navigation tabs -->
     <div class="py-2" :class="theme_bg">
-      <ul class="flex justify-center gap-5">
+      <ul class="flex justify-center gap-2">
         <li v-for="(item, key) in tabs" v-if="item.active">
           <input
             type="radio"

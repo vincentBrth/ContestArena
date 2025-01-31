@@ -12,12 +12,14 @@
         </FormMultiSelect>
         <!-- display mode -->
         <div>
-          <div v-if="focus == undefined && $store.getters['advanced/debugMode'].includes('grid')" class="flex justify-center px-6 py-2">
+          <div v-if="focus == undefined && $store.getters['advanced/debugMode'].includes('grid')"
+            class="flex justify-center px-6 py-2">
             <FormToggle label="grid" :modelValue="grid_mode" @update:modelValue="(v) => (grid_mode = v)"
               :theme_text="theme_text" :theme_bg="theme_active"></FormToggle>
           </div>
           <div v-if="focus != undefined"
-            class="flex justify-center px-6 text-2xl cursor-pointer material-symbols-outlined" @click="focus = undefined">
+            class="flex justify-center px-6 text-2xl cursor-pointer material-symbols-outlined"
+            @click="focus = undefined">
             keyboard_return
           </div>
         </div>
@@ -44,8 +46,8 @@
                 <td class="w-20"><img :src="ranked.candidate_data.asset[asset_in_use]" :title="ranked.candidate" /></td>
                 <td class="pl-3 text-xs">{{ ranked.candidate }}</td>
                 <td class="text-xs">{{ ranked.votes }}
-                <span v-if="tab == 'all'">{{ ranked.voter.map((subarray) => subarray.length)}}
-                </span>
+                  <span v-if="tab == 'all'">{{ ranked.voter.map((subarray) => subarray.length) }}
+                  </span>
                   ({{ (ranked.percent * 100).toFixed(0) }}%)
                 </td>
               </tr>
@@ -83,7 +85,7 @@
       </div>
     </div>
     <div v-else class="flex pt-28">
-            <span class="material-symbols-outlined text-neutral text-center w-full text-9xl">
+      <span class="material-symbols-outlined text-neutral text-center w-full text-9xl">
         more_horiz
       </span>
     </div>
@@ -243,8 +245,10 @@ export default {
               continue;
             }
           }
+          let voter = Array.from({ length: this.rounds.length }, () => []);
+          voter = voter.map((subArray, index) => value[index] ? value[index] : subArray);
           const votes = value.flat().length;
-          ranking_list.push({ candidate: key, candidate_data: this.pool[key], voter: value, votes: votes, percent: votes / nb_votes });
+          ranking_list.push({ candidate: key, candidate_data: this.pool[key], voter: voter, votes: votes, percent: votes / nb_votes });
         }
 
         // order rank with default filter
@@ -287,7 +291,7 @@ export default {
             for (const candidate_key of Object.keys(this.pool)) {
               let player_candidate_data;
               if (this.rounds[round].pool && this.rounds[round].pool.includes(candidate_key)) {
-                if (round in player_value.likes && player_value.likes[round].includes(candidate_key)) {
+                if (this.rounds[round].watch && round in player_value.likes && player_value.likes[round].includes(candidate_key)) {
                   if (this.rounds[round].qualified) {
                     player_candidate_data = this.rounds[round].qualified.includes(candidate_key) ? 1 : 2;
                   } else {

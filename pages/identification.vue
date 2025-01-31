@@ -70,7 +70,8 @@
               @click="tab = 'login_reset'">
               forgot password?
             </div>
-            <FormButton type="submit" :label="tabs[tab].name" :disabled="_is_submit_disabled" class="my-8 w-full"></FormButton>
+            <FormButton type="submit" :label="tabs[tab].name" :disabled="_is_submit_disabled" class="my-8 w-full">
+            </FormButton>
           </form>
         </div>
       </section>
@@ -98,8 +99,9 @@
             <FormCountry :modelValue="this.$store.getters['user/country']" label="country" :disabled="true"
               theme_bg="bg-neutral" theme_text="text-black" theme_label="text-black" theme_border="border-neutral">
             </FormCountry>
-            <FormField :modelValue="this.$store.getters['user/squads'].join(',')" label="squads" input_type="text" :disabled="true"
-              theme_bg="bg-neutral" theme_text="text-black" theme_label="text-black" theme_border="border-neutral">
+            <FormField :modelValue="this.$store.getters['user/squads'].join(',')" label="squads" input_type="text"
+              :disabled="true" theme_bg="bg-neutral" theme_text="text-black" theme_label="text-black"
+              theme_border="border-neutral">
             </FormField>
           </div>
         </div>
@@ -116,9 +118,11 @@
             <FormCountry :modelValue="country" @update:modelValue="(v) => (country = v)" label="country"
               theme_bg="bg-neutral" theme_text="text-black" theme_label="text-black" theme_border="border-neutral">
             </FormCountry>
-            <FormField :modelValue="squads" @update:modelValue="(v) => (squads = v.split(','))" label="squads (can be multiple ex 'magic,fans')" input_type="text"
-              theme_bg="bg-neutral" theme_text="text-black" theme_label="text-black" theme_border="border-neutral">
+            <FormField :modelValue="squads" @update:modelValue="(v) => (squads = v.split(','))"
+              label="squads (can be multiple ex 'magic,fans')" input_type="text" theme_bg="bg-neutral"
+              theme_text="text-black" theme_label="text-black" theme_border="border-neutral">
             </FormField>
+            {{ squads_available }}
             <FormField :modelValue="password" @update:modelValue="(v) => (password = v)" :autocomplete="false"
               label="password" input_type="password" input_min="6" theme_bg="bg-neutral" theme_text="text-black"
               theme_label="text-black" theme_border="border-neutral"></FormField>
@@ -181,6 +185,12 @@ export default {
   },
 
   computed: {
+    squads_available: {
+      get() {
+        // get all user and show their squad then show only squad unicity @TODO
+        return ["magic", "fans", "other"];
+      },
+    },
     _is_submit_disabled: {
       get() {
         let state = false;
