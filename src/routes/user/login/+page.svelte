@@ -2,11 +2,11 @@
 	import { goto } from '$app/navigation';
 	import Login from '$lib/components/user/Login.svelte';
 	import { ProfileRoute } from '$lib/route';
-	import session from '$lib/session';
+	import session from '$lib/sdk/store/session';
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
-		if ($session.loggedIn) {
+		if ($session.user.uid) {
 			goto(ProfileRoute.path);
 		}
 	});

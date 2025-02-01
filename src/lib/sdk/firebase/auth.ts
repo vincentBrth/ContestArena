@@ -1,135 +1,148 @@
-import users from '$lib/models/users';
-import { auth } from '$lib/sdk/firebase/firebase.config';
-import type { UserSession } from '$lib/session';
-import session from '$lib/session';
-import { toasts } from '$lib/toast';
+/**
+ * Auth Firebase SDK
+ */
+import { auth } from '$lib/sdk/firebase/config';
+import { notifications } from '$lib/sdk/store/notification';
+import type { Session } from '$lib/sdk/store/session';
+import session from '$lib/sdk/store/session';
 import {
-  GoogleAuthProvider, createUserWithEmailAndPassword, getAdditionalUserInfo, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword,
+  GoogleAuthProvider, createUserWithEmailAndPassword,
+  sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword,
   signInWithPopup, signOut, type UserCredential
 } from 'firebase/auth';
-import { toSvg } from 'jdenticon';
 
 /**
- * Generate a profile picture from a string
- * @param pseudo 
- * @returns bin64 image
+ * Signs in a user using Google authentication.
+ *
+ * This function uses a popup to allow the user to sign in with their Google account.
+ * Upon successful sign-in, the user's session is updated with their UID and email,
+ * and a success message is displayed. If the sign-in fails, an error message is shown.
+ *
+ * @returns {Promise<UserCredential | void>} A promise that resolves to the result of the sign-in operation.
  */
-export function generateAvatar(pseudo: string) {
-  return `data:image/svg+xml;base64,${btoa(toSvg(pseudo, 256))}`;
+export async function signInWithGoogle(): Promise<UserCredential | void> {
+  const provider = new GoogleAuthProvider();
+  return await signInWithPopup(auth, provider)
+    .then((result) => {
+      session.update((cur: Session) => {
+        return {
+          ...cur,
+          user: { uid: result.user.uid, email: result.user.email ? result.user.email : '' },
+        };
+      });
+      notifications.success('Logged in successfully');
+      return result
+    })
+    .catch((error) => {
+      notifications.error(`Sign in failed : ${error.message}`);
+    });
 }
 
 /**
- * Login with email and password
- * @param email 
- * @param password 
- * @returns true if login is successful
+ * Signs in a user using email and password.
+ *
+ * Upon successful sign-in, the user's session is updated with their UID and email,
+ * and a success message is displayed. If the sign-in fails, an error message is shown.
+ *
+ * @param {string} email The user's email address.
+ * @param {string} password The user's password.
+ * @returns {Promise<UserCredential | void>} A promise that resolves to the result of the sign-in operation.
  */
-export async function loginWithMail(email:string, password: string) {
-  let ret : boolean = false;
-  await signInWithEmailAndPassword(auth, email, password)
+export async function loginWithMail(email: string, password: string): Promise<UserCredential | void> {
+  return await signInWithEmailAndPassword(auth, email, password)
     .then(async (result) => {
       const { user }: UserCredential = result;
       if (!user.emailVerified) {
-        ret = false;
-        toasts.warning('Please verify your email before logging in')
+        notifications.warning('Please verify your email before logging in')
         await signOut(auth);
       } else {
-        ret = true;
-        toasts.success('Logged in successfully')
-        session.update((cur: UserSession) => {
+        notifications.success('Logged in successfully')
+        session.update((cur: Session) => {
           return {
             ...cur,
-            userUid: user.uid,
-            loggedIn: true
+            user: { uid: user.uid, email: email },
           };
         });
+        return result;
       }
     })
     .catch((error) => {
-      toasts.error(`Login failed : ${error.message}`);
-      ret = false;
+      notifications.error(`Login failed : ${error.message}`);
     });
-  
-    return ret;
 }
 
 /**
- * Login with Google
- * @param email
- * @returns true if sign in is successful
+ * Registers a new user using email and password.
+ *
+ * Upon successful registration, a verification email is sent to the user's email address,
+ * and a success message is displayed. If the registration fails, an error message is shown.
+ *
+ * @param {string} email The user's email address.
+ * @param {string} password The user's password.
+ * @returns {Promise<UserCredential | void>} A promise that resolves to the result of the registration operation.
  */
-export async function signInWithGoogle(email : string) {
-  let ret : boolean = false;
-  const provider = new GoogleAuthProvider();
-  await signInWithPopup(auth, provider)
+export async function register(email: string, password: string): Promise<UserCredential | void> {
+  return await createUserWithEmailAndPassword(auth, email, password)
     .then((result) => {
-      const pseudo: string = result.user.displayName
-        ? result.user.displayName.split(' ').join('')
-        : result.user.email
-          ? result.user.email.split('@')[0]
-          : 'Anonymous';
-      const avatar: string = result.user.photoURL
-        ? result.user.photoURL
-        : generateAvatar(pseudo);
-
-      if (getAdditionalUserInfo(result)?.isNewUser) {
-        users.updateUserInfo(result.user.uid, { email: email, pseudo: pseudo, avatar: avatar });
-      }
-
-      session.update((cur: UserSession) => {
-        return {
-          ...cur,
-          userUid: result.user.uid,
-          loggedIn: true
-        };
-      });
-      toasts.success('Logged in successfully');
-      ret = true;
-    })
-    .catch((error) => {
-      toasts.error(`Login failed : ${error.message}`);
-      ret= false;
-    });
-    return ret;
-}
-
-/**
- * Register a new user
- * @param email 
- * @param password 
- * @param pseudo 
- */
-export async function register(email:string, password: string, pseudo: string) {
-  await createUserWithEmailAndPassword(auth, email, password)
-    .then((result) => {
-      const avatar = generateAvatar(pseudo);
-      users.updateUserInfo(result.user.uid, { email: email, pseudo: pseudo, avatar: avatar });
-      sendEmailVerification(result.user)
+      return sendEmailVerification(result.user)
         .then(() => {
-          // Sign out until email is verified
-          toasts.success('Register successful');
-          toasts.info('Please verify your email before logging in');
+          notifications.success('Register successful');
+          notifications.info('Please verify your email before logging in');
           signOut(auth)
+          return result
         })
         .catch((error) => {
-          toasts.error(`Error sending email verification : ${error.message}`);
+          notifications.error(`Error sending email verification : ${error.message}`);
         });
     })
     .catch((error) => {
-      toasts.error(`Register failed : ${error.message}`);
+      notifications.error(`Register failed : ${error.message}`);
     });
 }
 
+
 /**
- * Reset password for a user
- * @param email 
+ * Logs out the current user.
+ *
+ * This function signs out the current user from the Firebase authentication system.
+ * Upon successful sign-out, the user's session is cleared, and a success message is displayed.
+ * If the sign-out operation fails, an error message is shown.
+ *
+ * @returns {Promise<void>} A promise that resolves when the sign-out operation is complete.
  */
-export async function resetPassword(email: string) {
-  await sendPasswordResetEmail(auth, email)
+export async function logout(): Promise<void> {
+  await signOut(auth)
     .then(() => {
-      toasts.success('Reset password email sent');
+      session.update((cur: Session) => {
+        return {
+          ...cur,
+          user: { uid: '', email: '' },
+        };
+      });
+      notifications.success('Logged out successfully');
     })
     .catch((error) => {
-      toasts.error(`Reset password failed : ${error.message}`);
+      notifications.error(`Logout failed : ${error.message}`);
+    });
+}
+
+
+/**
+ * Sends a password reset email to the user.
+ *
+ * This function sends a password reset email to the specified email address.
+ * Upon successful sending, a success message is displayed. If the operation fails,
+ * an error message is shown.
+ *
+ * @param {string} email The user's email address.
+ * @returns {Promise<void>} A promise that resolves when the password reset email is sent.
+ */
+export async function resetPassword(email: string): Promise<void> {
+  await sendPasswordResetEmail(auth, email)
+    .then(() => {
+      notifications.success('Reset password email sent');
+    })
+    .catch((error) => {
+      notifications.error(`Reset password failed : ${error.message}`);
     });
 }

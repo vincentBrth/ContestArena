@@ -1,17 +1,17 @@
 <script lang="ts">
 	import InputField from '$lib/components/core/InputField.svelte';
+	import { RestrictedEmail } from '$lib/sdk/util/restricted';
 	import { RegisterRoute } from '$lib/route';
 	import { resetPassword } from '$lib/sdk/firebase/auth';
 
-	let email: string = 'vincent.berthet42@gmail.com';
+	let email: RestrictedEmail = new RestrictedEmail('vincent.berthet42@gmail.com');
 </script>
 
 <section>
 	<div class="flex flex-col relative gap-3">
-		<h2 class="uppercase text-3xl text-center mb-4">Reset</h2>
 		<form
 			on:submit|preventDefault={async () => {
-				await resetPassword(email);
+				await resetPassword(email.value);
 			}}
 			class="flex flex-col gap-3"
 		>
@@ -21,7 +21,7 @@
 				required={true}
 				model={email}
 				on:model={(event) => {
-					email = event.detail.model;
+					email.value = event.detail.model;
 				}}
 			/>
 

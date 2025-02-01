@@ -1,37 +1,47 @@
 <script lang="ts">
-	import NavBar from '$lib/components/NavBar.svelte';
-	import Toast from '$lib/components/Toast.svelte';
+	import { page } from '$app/stores';
+	import Toast from '$lib/components/core/Notification.svelte';
+	import NavBar from '$lib/components/nav/NavBar.svelte';
 	import users from '$lib/models/users';
-	import session from '$lib/session';
-	import { toasts } from '$lib/toast';
+	import { notifications } from '$lib/sdk/store/notification';
+	import session from '$lib/sdk/store/session';
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import type { LayoutData } from './$types';
 
-	export let data: LayoutData;
 	onMount(async () => {
 		users.watch();
 		const user: any = await data.getAuthUser();
-		const loggedIn = user != null;
+		const logged = user != null;
 		session.set({
-			userUid: loggedIn ? user.uid : '',
-			loggedIn,
+			user: {
+				uid: logged ? user.uid : '',
+				email: logged ? user.email : '',
+			},
 			loading: false
 		});
 	});
-	//@TODO loading
-	$: user = $users.get($session.userUid);
+
+	// Data
+	export let data: LayoutData;
+
+	// Computed
+	$: title =
+		$page.url.pathname
+			.split('/')
+			.filter((segment) => segment !== '')
+			.pop() || 'Contest Arena';
 </script>
 
 {#if $session.loading == true || $session.loading == undefined}
 	<div>Loading...</div>
 {:else}
-	<NavBar logged={$session.loggedIn} userInfo={user?.info} />
+	<NavBar user={$users.get($session.user.uid)} {title} />
 	<div class="container mx-auto my-auto p-3 z-0">
 		<Toast
-			toasts={$toasts}
+			notifications={$notifications}
 			on:click={(event) => {
-				toasts.remove(event.detail);
+				notifications.remove(event.detail);
 			}}
 		/>
 		<slot />

@@ -1,23 +1,20 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { auth } from '$lib/sdk/firebase/firebase.config';
-	import session  from '$lib/session';
-	import { signOut } from 'firebase/auth';
+	import { page } from '$app/stores';
+	import { LoginRoute, LogoutRoute, ProfileRoute } from '$lib/route';
+	import { logout } from '$lib/sdk/firebase/auth';
 	import { onMount } from 'svelte';
-	onMount(() => {
-		(async () => {
-			await signOut(auth)
-				.then(() => {
-					session.set({
-						userUid: '',
-						loggedIn: false,
-						loading: false
-					});
-				})
-				.catch((error) => {
-					return error;
-				});
-			goto('/');
-		})();
+
+	// Hooks
+	onMount(async () => {
+		await logout();
+		handle();
 	});
+
+	// Methods
+	function handle() {
+		if ($page.url.pathname == ProfileRoute.path || $page.url.pathname == LogoutRoute.path) {
+			goto(LoginRoute.path);
+		}
+	}
 </script>

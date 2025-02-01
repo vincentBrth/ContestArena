@@ -1,25 +1,57 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import InputField from '$lib/components/core/InputField.svelte';
+	import users from '$lib/models/users';
 	import { ProfileRoute, RegisterRoute, ResetRoute } from '$lib/route';
 	import { loginWithMail, signInWithGoogle } from '$lib/sdk/firebase/auth';
-	let email: string = 'vincent.berthet42@gmail.com';
-	let password: string = 'sissou';
+	import { generateAvatar } from '$lib/sdk/util/avatar';
+	import { ResrictedString, RestrictedEmail } from '$lib/sdk/util/restricted';
+	import { getAdditionalUserInfo } from 'firebase/auth';
+
+	// Internal
+	let email: RestrictedEmail = new RestrictedEmail('vincent.berthet42@gmail.com'); //@TODO temp
+	let password: ResrictedString = new ResrictedString('sissou');
+
+	// Computed
+	$: canLogin = !(email.valid() && password.valid());
+
+	// Methods
+	async function signIn() {
+		const signed = await signInWithGoogle();
+		if (signed) {
+			if (getAdditionalUserInfo(signed)?.isNewUser) {
+				const pseudo: string = signed.user.displayName
+					? signed.user.displayName.split(' ').join('')
+					: signed.user.email
+						? signed.user.email.split('@')[0]
+						: 'Anonymous';
+				const avatar: string = signed.user.photoURL ? signed.user.photoURL : generateAvatar(pseudo);
+				users.updateUserInfo(signed.user.uid, {
+					country: '',
+					pseudo: pseudo,
+					squads: [],
+					avatar: avatar
+				});
+			}
+			goto(ProfileRoute.path);
+		}
+	}
+
+	async function login() {
+		const signed = await loginWithMail(email.value, password.value);
+		if (signed) {
+			goto(ProfileRoute.path);
+		}
+	}
 </script>
 
 <section>
 	<div class="flex flex-col gap-3">
-		<h2 class="uppercase text-3xl text-center mb-4">Sign In</h2>
 		<div class="flex justify-center">
 			<button
 				type="button"
-				class=" bg-[#4285F4] text-white rounded-lg px-5 inline-flex items-center justify-center w-fit"
-				on:click={async () => {
-					const signed = await signInWithGoogle(email);
-					if (signed == true) {
-						goto(ProfileRoute.path);
-					}
-				}}
+				class=" bg-[#4285F4] text-white rounded-lg px-4 inline-flex items-center justify-center w-fit"
+				on:click={signIn}
 			>
 				<svg
 					class="w-4 h-4 mr-2 -ml-1"
@@ -39,26 +71,18 @@
 			</button>
 		</div>
 		<div
-			class="flex items-center before:flex-1 before:border-t before:border-neutral-500 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-500"
+			class="flex py-4 items-center before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300"
 		>
 			<p class="mx-4 text-center text-neutral-400">or</p>
 		</div>
-		<form
-			on:submit|preventDefault={async () => {
-				const signed = await await loginWithMail(email, password);
-				if (signed == true) {
-					goto(ProfileRoute.path);
-				}
-			}}
-			class="flex flex-col gap-3"
-		>
+		<form on:submit|preventDefault={login} class="flex flex-col gap-3">
 			<InputField
 				label="email"
 				type="email"
 				required={true}
 				model={email}
 				on:model={(event) => {
-					email = event.detail.model;
+					email.value = event.detail.model;
 				}}
 			/>
 			<InputField
@@ -66,16 +90,15 @@
 				type="password"
 				required={true}
 				model={password}
-				minLength={6}
 				on:model={(event) => {
-					password = event.detail.model;
+					password.value = event.detail.model;
 				}}
 			/>
 			<div class="text-xs flex justify-between pt-6">
 				<a href={ResetRoute.path}>{ResetRoute.description}</a>
 				<a href={RegisterRoute.path}>{RegisterRoute.description}</a>
 			</div>
-			<input type="submit" value="Login" />
+			<input type="submit" value="Login" disabled={canLogin} />
 		</form>
 	</div>
 </section>

@@ -1,4 +1,4 @@
-import { auth } from '$lib/sdk/firebase/firebase.config';
+import { auth } from '$lib/sdk/firebase/config';
 import { onAuthStateChanged } from 'firebase/auth';
 export const prerender = true
 

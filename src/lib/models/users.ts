@@ -1,30 +1,28 @@
 /**
  * /users in Firebase
  */
-import { database } from '$lib/sdk/firebase/firebase.config';
+import { database } from '$lib/sdk/firebase/config';
 import { child, onValue, ref, set } from 'firebase/database';
 import { writable, type Writable } from 'svelte/store';
 
+
 export type UserInfo = {
-	email: string;
+	country: string;
 	pseudo: string;
+	squads: string[];
 	avatar: string;
 };
 
-export type User = {
-	info: UserInfo;
-}
-
 const dbRef = ref(database, '/users/');
-const users = <Writable<Map<string, User>>>writable(new Map());
+const users = <Writable<Map<string, UserInfo>>>writable(new Map());
 
 function watch() {
 	onValue(dbRef, (snapshot) => {
 		const data = snapshot.val();
-		const usersMap = new Map<string, User>();
+		const usersMap = new Map<string, UserInfo>();
 		if (data) {
 			Object.keys(data).forEach((key) => {
-				usersMap.set(key, data[key]);
+				usersMap.set(key, { country: data[key].country, pseudo: data[key].pseudo, squads: data[key].squads, avatar: data[key].avatar });
 			});
 		}
 		users.set(usersMap);
@@ -32,7 +30,7 @@ function watch() {
 }
 
 function updateUserInfo(uid: string, user: UserInfo) {
-	set(child(dbRef, `${uid}/info`), user);
+	set(child(dbRef, uid), user);
 }
 
 export default {

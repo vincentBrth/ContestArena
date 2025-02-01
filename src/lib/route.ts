@@ -2,6 +2,15 @@
 * Define the routes of the application.
 **/
 
+/**
+ * Represents a route in the application.
+ * 
+ * @interface Route
+ * @property {string} name - The name of the route.
+ * @property {string} icon - The icon associated with the route.
+ * @property {string} description - A brief description of the route.
+ * @property {string} path - The path or URL of the route.
+ */
 interface Route {
     name: string;
     icon: string;
@@ -9,6 +18,8 @@ interface Route {
     path: string;
 }
 
+// Home
+export const HomeRoute: Route = { name: 'Home', icon: 'home', description: "", path: '/' };
 // User
 export const LoginRoute: Route = { name: 'Login', icon: 'login', description: "Already have an account ?", path: '/user/login' };
 export const LogoutRoute: Route = { name: 'Logout', icon: 'logout', description: "Disconnect", path: '/user/logout' };

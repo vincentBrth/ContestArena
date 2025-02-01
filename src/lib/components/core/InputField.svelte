@@ -1,19 +1,25 @@
 <script lang="ts">
+	import { ResrictedString } from '$lib/sdk/util/restricted';
+	import type { Theme } from '$lib/models/theme';
+	import { LightTheme } from '$lib/models/theme';
 	import { createEventDispatcher } from 'svelte';
 
+	// Data
 	export let type: string = 'text';
 	export let label: string = 'label';
+	export let theme: Theme = LightTheme;
 	export let required: boolean = false;
 	export let disabled: boolean = false;
-	export let minLength: number = 0;
-	export let maxLength: number = 64;
+	export let model: ResrictedString
 
-	export let model: string = '';
+	// Internal
 	let showPassword: boolean = false;
 	let errorMessage: string = '';
 
+	// Dispatch
 	const dispatch = createEventDispatcher();
 
+	// Functions
 	function handle(event: Event) {
 		dispatch('model', { model: (event.target as HTMLInputElement).value });
 		errorMessage = '';
@@ -22,9 +28,9 @@
 				errorMessage = 'Please provide a valid email address';
 			}
 		} else if ((event.target as HTMLInputElement).validity.tooShort) {
-			errorMessage = `Input must contain at least ${minLength} characters`;
+			errorMessage = `Input must contain at least ${model.minLength} characters`;
 		} else if ((event.target as HTMLInputElement).validity.tooLong) {
-			errorMessage = `Input must contain at most ${maxLength} characters`;
+			errorMessage = `Input must contain at most ${model.maxLength} characters`;
 		} else if ((event.target as HTMLInputElement).validity.patternMismatch) {
 			errorMessage = 'Invalid input pattern';
 		} else if ((event.target as HTMLInputElement).validity.rangeOverflow) {
@@ -37,26 +43,27 @@
 	}
 </script>
 
-<div class="relative z-100">
+<div class="relative z-100 my-2">
 	<input
 		{type}
 		placeholder=""
 		{required}
 		{disabled}
-		minlength={minLength}
-		maxlength={maxLength}
-		value={model}
+		minlength={model.minLength}
+		maxlength={model.maxLength}
+		value={model.value}
 		on:input={(event) => {
 			handle(event);
 		}}
+		class="{theme.border} focus:border-transparent disabled:bg-gray-300"
 	/>
-	<i class="first-letter:uppercase"
-		>{label}<span class="text-red-300">{required && !disabled ? '*' : ''}</span></i
+	<i class="first-letter:uppercase text-xs font-normal -top-2 {theme.background} "
+		>{label}<span class="text-red-600">{required && !disabled ? '*' : ''}</span></i
 	>
 	{#if type == 'password' || showPassword == true}
 		<button
 			type="button"
-			class="material-icons bg-transparent absolute top-2 right-1"
+			class="material-icons bg-transparent absolute top-1 right-1 {theme.text}"
 			on:click={() => {
 				showPassword = !showPassword;
 				if (showPassword) {
@@ -73,7 +80,7 @@
 			{/if}
 		</button>
 	{/if}
-	<div class="text-red-300 text-xs">
+	<div class="text-red-600 text-xs">
 		{#if errorMessage}
 			<p>{errorMessage}</p>
 		{:else}
@@ -86,25 +93,11 @@
 	i {
 		position: absolute;
 		left: 0;
-		padding: 15px 10px;
+		margin-left: 14px;
+		padding-left: 8px;
+		padding-right: 8px;
 		font-style: normal;
-		color: #aaa;
 		transition: 0.5s;
 		pointer-events: none;
-	}
-
-	input:not(:placeholder-shown) ~ i,
-	input:focus ~ i {
-		transform: translateY(-7.5px);
-		font-size: 0.8em;
-	}
-
-	input:not(:placeholder-shown):invalid {
-		border: none;
-		outline: 1px solid #f48f91;
-	}
-
-	input:disabled {
-		background-color: #1d1c1c;
 	}
 </style>
