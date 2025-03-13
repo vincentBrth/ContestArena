@@ -1,14 +1,14 @@
 <script lang="ts">
 	import InputField from '$lib/components/core/InputField.svelte';
-	import type { UserInfo } from '$lib/models/users';
-	import users from '$lib/models/users';
+	import type { User } from '$lib/models/user';
 	import { notifications } from '$lib/sdk/store/notification';
 	import session from '$lib/sdk/store/session';
 	import { ResrictedString, RestrictedEmail } from '$lib/sdk/util/restricted';
 	import { getAuth, updatePassword } from 'firebase/auth';
+	import users from '../../../store/users';
 
 	// Data
-	export let user: UserInfo | undefined;
+	export let user: User;
 
 	// Internal
 	let editing: boolean = false;
@@ -24,7 +24,7 @@
 		pseudo: pseudo.value,
 		squads: squads,
 		avatar: avatar
-	} as UserInfo;
+	} as User;
 
 	$: canBeUpdated = password.valid() || (pseudo.valid() && pseudo.value !== user?.pseudo);
 
@@ -41,9 +41,9 @@
 	}
 
 	async function update_user_profile() {
-		$session.loading = true;
+		$session.loading += 1;
 		try {
-			users.updateUserInfo($session.user.uid, updated_profile);
+			users.updateUser($session.user.uid, updated_profile);
 			if (password.value.length > 0) {
 				const auth = getAuth();
 				if (auth.currentUser) {
@@ -55,80 +55,84 @@
 			notifications.error(error);
 		}
 		editing = !editing;
-		$session.loading = false;
+		$session.loading -= 1;
 	}
 </script>
 
 <section class="max-w-lg">
-	{#if user == undefined}
-		<!-- @TODO error panel  -->
-	{:else}
-		<div>
-			{#if !editing}
-				<div class="flex justify-end">
-					<button
-						class="material-icons"
-						on:click={() => {
-							editing = !editing;
-							pseudo.value = user.pseudo;
-							avatar = user.avatar;
-							password.value = '';
-						}}>edit</button
-					>
-				</div>
-				<img src={user.avatar} alt="avatar" class="w-24 h-24 rounded-full mx-auto my-4 bg-white border border-black" />
+	<div>
+		{#if !editing}
+			<div class="flex justify-end">
+				<button
+					class="material-icons"
+					on:click={() => {
+						editing = !editing;
+						pseudo.value = user.pseudo;
+						avatar = user.avatar;
+						password.value = '';
+					}}>edit</button
+				>
+			</div>
+			<img
+				src={user.avatar}
+				alt="avatar"
+				class="w-24 h-24 rounded-full mx-auto my-4 bg-white border border-black"
+			/>
+			<div>
+				<InputField
+					label="email"
+					disabled={true}
+					model={new RestrictedEmail($session.user.email)}
+				/>
+				<InputField label="pseudo" disabled={true} model={new ResrictedString(user.pseudo)} />
+			</div>
+		{:else}
+			<form on:submit|preventDefault={update_user_profile}>
 				<div>
+					<div class="flex flex-col items-center pb-8">
+						<img
+							src={avatar}
+							class="w-24 h-24 rounded-full mx-auto my-4 bg-white border border-black"
+							alt="image_preloaded"
+						/>
+						<input type="file" accept="image/*" on:change={handleImageLoad} />
+					</div>
 					<InputField
 						label="email"
 						disabled={true}
 						model={new RestrictedEmail($session.user.email)}
 					/>
-					<InputField label="pseudo" disabled={true} model={new ResrictedString(user.pseudo)} />
+					<InputField
+						label="pseudo"
+						type="text"
+						required={true}
+						model={pseudo}
+						on:model={(event) => {
+							pseudo.value = event.detail.model;
+						}}
+					/>
+					<InputField
+						label="password"
+						type="password"
+						required={false}
+						model={password}
+						on:model={(event) => {
+							password.value = event.detail.model;
+						}}
+					/>
 				</div>
-			{:else}
-				<form on:submit|preventDefault={update_user_profile}>
-					<div>
-						<div class="flex flex-col items-center pb-8">
-							<img src={avatar} class="w-24 h-24 rounded-full mx-auto my-4 bg-white border border-black" alt="image_preloaded" />
-							<input type="file" accept="image/*" on:change={handleImageLoad} />
-						</div>
-						<InputField
-							label="email"
-							disabled={true}
-							model={new RestrictedEmail($session.user.email)}
-						/>
-						<InputField
-							label="pseudo"
-							type="text"
-							required={true}
-							model={pseudo}
-							on:model={(event) => {
-								pseudo.value = event.detail.model;
-							}}
-						/>
-						<InputField
-							label="password"
-							type="password"
-							required={false}
-							model={password}
-							on:model={(event) => {
-								password.value = event.detail.model;
-							}}
-						/>
-					</div>
-					<div class="flex flex-col justify-center gap-3">
-						<button type="submit" class="w-full" disabled={!canBeUpdated}> Update </button>
-						<button
-							class="w-full"
-							on:click={() => {
-								editing = !editing;
-							}}
-						>
-							Cancel
-						</button>
-					</div>
-				</form>
-			{/if}
-		</div>
-	{/if}
+				<div class="flex flex-col justify-center gap-3">
+					<button type="submit" class="w-full" disabled={!canBeUpdated}> Update </button>
+					<button
+						class="w-full"
+						on:click={() => {
+							editing = !editing;
+						}}
+					>
+						Cancel
+					</button>
+				</div>
+			</form>
+		{/if}
+	</div>
 </section>

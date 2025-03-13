@@ -2,13 +2,13 @@
 	import Profile from '$lib/components/user/Profile.svelte';
 
 	import { goto } from '$app/navigation';
-	import { LoginRoute } from '$lib/route';
-	import usersStore from '$lib/models/users';
+	import { SigninRoute } from '$lib/route';
 	import session from '$lib/sdk/store/session';
 	import { onMount } from 'svelte';
+	import usersStore from '../../../store/users';
 	onMount(async () => {
 		if (!$session.user.uid) {
-			goto(LoginRoute.path);
+			goto(SigninRoute.path);
 		}
 	});
 
@@ -16,5 +16,7 @@
 </script>
 
 <div class="flex justify-center">
-	<Profile user={user} />
+	{#if user}
+		<Profile user={user} />
+	{/if}
 </div>

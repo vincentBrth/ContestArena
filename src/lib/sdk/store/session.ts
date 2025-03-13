@@ -4,15 +4,23 @@
 import { writable, type Writable } from 'svelte/store';
 export type UserSession = {
     uid: string;
-    email: string; //@TODO pourrais pas etre un watch sur le firebase ?
+    email: string;
 };
 
 export type Session = {
     user: UserSession;
-    loading: boolean;
+    initialized: boolean;
+    loading: number;
 }
 
-const sessionStore = <Writable<Session>>writable({});
+const sessionStore = <Writable<Session>>writable({
+    user: {
+        uid: '',
+        email: ''
+    },
+    initialized: false,
+    loading: 0
+});
 
 export default {
     subscribe: sessionStore.subscribe,

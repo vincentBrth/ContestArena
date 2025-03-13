@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import InputField from '$lib/components/core/InputField.svelte';
-	import type { UserInfo } from '$lib/models/users';
-	import users from '$lib/models/users';
-	import { LoginRoute } from '$lib/route';
+	import type { User } from '$lib/models/user';
+	import { SigninRoute } from '$lib/route';
 	import { register } from '$lib/sdk/firebase/auth';
 	import { generateAvatar } from '$lib/sdk/util/avatar';
 	import { ResrictedString, RestrictedEmail } from '$lib/sdk/util/restricted';
+	import users from '../../../store/users';
 
 	// Internal
 	let email: RestrictedEmail = new RestrictedEmail();
@@ -20,14 +20,14 @@
 	const registerUser = async () => {
 		const registered = await register(email.value, password.value);
 		if (registered) {
-			const userInfo: UserInfo = {
+			const user: User = {
 				country: '',
 				pseudo: pseudo.value,
 				squads: [],
 				avatar: generateAvatar(pseudo.value)
 			};
-			users.updateUserInfo(registered.user.uid, userInfo);
-			goto(LoginRoute.path);
+			users.updateUser(registered.user.uid, user);
+			goto(SigninRoute.path);
 		}
 	};
 </script>
@@ -62,9 +62,6 @@
 					password.value = event.detail.model;
 				}}
 			/>
-			<div class="text-xs flex justify-between pt-6">
-				<a href={LoginRoute.path}>{LoginRoute.description}</a>
-			</div>
 			<input type="submit" value="Register" disabled={canRegister} />
 		</form>
 	</div>

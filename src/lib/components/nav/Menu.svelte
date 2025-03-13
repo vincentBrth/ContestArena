@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { LoginRoute, LogoutRoute, ProfileRoute, RegisterRoute } from '$lib/route';
+	import { LogoutRoute, ProfileRoute, SigninRoute } from '$lib/route';
 
-	import type { UserInfo } from '$lib/models/users';
+	import type { User } from '$lib/models/user';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
 	// Data
-	export let user: UserInfo | undefined;
+	export let user: User | undefined;
 
 	// Methods
 	function handle() {
@@ -42,7 +42,7 @@
 					<a href={ProfileRoute.path} on:click={handle}>
 						<div class="flex">
 							<span class="material-icons bg-transparent">{ProfileRoute.icon}</span>
-							<span class="ml-2">{ProfileRoute.name}</span>
+							<span class="ml-2 first-letter:capitalize">{ProfileRoute.name}</span>
 						</div>
 					</a>
 
@@ -50,20 +50,14 @@
 					<a href={LogoutRoute.path} on:click={handle}>
 						<div class="flex">
 							<span class="material-icons bg-transparent">{LogoutRoute.icon}</span>
-							<span class="ml-2">{LogoutRoute.name}</span>
+							<span class="ml-2 first-letter:capitalize">{LogoutRoute.name}</span>
 						</div>
 					</a>
 				{:else}
-					<a href={LoginRoute.path} on:click={handle}>
+					<a href={SigninRoute.path} on:click={handle}>
 						<div class="flex">
-							<span class="material-icons bg-transparent">{LoginRoute.icon}</span>
-							<span class="ml-2">{LoginRoute.name}</span>
-						</div>
-					</a>
-					<a href={RegisterRoute.path} on:click={handle}>
-						<div class="flex">
-							<span class="material-icons bg-transparent">{RegisterRoute.icon}</span>
-							<span class="ml-2">{RegisterRoute.name}</span>
+							<span class="material-icons bg-transparent">{SigninRoute.icon}</span>
+							<span class="ml-2 first-letter:capitalize">{SigninRoute.name}</span>
 						</div>
 					</a>
 				{/if}

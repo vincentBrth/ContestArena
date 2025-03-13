@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import InputField from '$lib/components/core/InputField.svelte';
-	import users from '$lib/models/users';
-	import { ProfileRoute, RegisterRoute, ResetRoute } from '$lib/route';
+	import users from '../../../store/users';
+	import { ProfileRoute, ResetRoute } from '$lib/route';
 	import { loginWithMail, signInWithGoogle } from '$lib/sdk/firebase/auth';
 	import { generateAvatar } from '$lib/sdk/util/avatar';
 	import { ResrictedString, RestrictedEmail } from '$lib/sdk/util/restricted';
@@ -26,7 +26,7 @@
 						? signed.user.email.split('@')[0]
 						: 'Anonymous';
 				const avatar: string = signed.user.photoURL ? signed.user.photoURL : generateAvatar(pseudo);
-				users.updateUserInfo(signed.user.uid, {
+				users.updateUser(signed.user.uid, {
 					country: '',
 					pseudo: pseudo,
 					squads: [],
@@ -95,8 +95,7 @@
 				}}
 			/>
 			<div class="text-xs flex justify-between pt-6">
-				<a href={ResetRoute.path}>{ResetRoute.description}</a>
-				<a href={RegisterRoute.path}>{RegisterRoute.description}</a>
+				<a class="first-letter:capitalize" href={ResetRoute.path}>{ResetRoute.description}</a>
 			</div>
 			<input type="submit" value="Login" disabled={canLogin} />
 		</form>

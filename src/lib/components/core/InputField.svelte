@@ -57,7 +57,7 @@
 		}}
 		class="{theme.border} focus:border-transparent disabled:bg-gray-300"
 	/>
-	<i class="first-letter:uppercase text-xs font-normal -top-2 {theme.background} "
+	<i class="first-letter:uppercase text-xs font-normal -top-2 {theme.background}"
 		>{label}<span class="text-red-600">{required && !disabled ? '*' : ''}</span></i
 	>
 	{#if type == 'password' || showPassword == true}

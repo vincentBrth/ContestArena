@@ -1,8 +1,8 @@
 <script lang="ts">
 	import InputField from '$lib/components/core/InputField.svelte';
-	import { RestrictedEmail } from '$lib/sdk/util/restricted';
-	import { RegisterRoute } from '$lib/route';
+	import { SigninRoute } from '$lib/route';
 	import { resetPassword } from '$lib/sdk/firebase/auth';
+	import { RestrictedEmail } from '$lib/sdk/util/restricted';
 
 	let email: RestrictedEmail = new RestrictedEmail('vincent.berthet42@gmail.com');
 </script>
@@ -26,7 +26,7 @@
 			/>
 
 			<div class="text-xs flex justify-between pt-6">
-				<a href={RegisterRoute.path}>{RegisterRoute.description}</a>
+				<a class="first-letter:capitalize" href={SigninRoute.path}>{SigninRoute.description}</a>
 			</div>
 			<input type="submit" value="Reset" />
 		</form>

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import UserMenu from '$lib/components/user/Menu.svelte';
-	import type { UserInfo } from '$lib/models/users';
+	import Menu from '$lib/components/nav/Menu.svelte';
+	import type { User } from '$lib/models/user';
 	import { HomeRoute } from '$lib/route';
 
 	// Data
-	export let user: UserInfo | undefined;
+	export let user: User | undefined;
 	export let title: String;
 </script>
 
@@ -25,6 +25,6 @@
 		{title}
 	</div>
 	<div class="flex">
-		<UserMenu user={user} />
+		<Menu {user} />
 	</div>
 </nav>

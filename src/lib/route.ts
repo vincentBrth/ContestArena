@@ -13,18 +13,18 @@
  */
 interface Route {
     name: string;
+    title: string;
     icon: string;
     description: string;
     path: string;
 }
 
 // Home
-export const HomeRoute: Route = { name: 'Home', icon: 'home', description: "", path: '/' };
+export const HomeRoute: Route = { name: 'home', title: 'Contest Arena', icon: 'home', description: "", path: '/' };
 // User
-export const LoginRoute: Route = { name: 'Login', icon: 'login', description: "Already have an account ?", path: '/user/login' };
-export const LogoutRoute: Route = { name: 'Logout', icon: 'logout', description: "Disconnect", path: '/user/logout' };
-export const RegisterRoute: Route = { name: 'Register', icon: 'how_to_reg', description: "No account yet ?", path: '/user/register' };
-export const ResetRoute: Route = { name: 'Reset', icon: 'reset_wrench ', description: "Forgot password ?", path: '/user/reset' };
-export const ProfileRoute: Route = { name: 'Profile', icon: 'account_circle', description: "See profile", path: '/user/profile' };
+export const SigninRoute: Route = { name: 'sign in', title: 'sign in', icon: 'login', description: "sign in ?", path: '/user/signIn' };
+export const LogoutRoute: Route = { name: 'logout', title: 'logout', icon: 'logout', description: "disconnect", path: '/user/logout' };
+export const ResetRoute: Route = { name: 'reset', title: 'reset', icon: 'reset_wrench ', description: "forgot password ?", path: '/user/reset' };
+export const ProfileRoute: Route = { name: 'profile', title: 'profile', icon: 'account_circle', description: "see profile", path: '/user/profile' };
 
-export const NavigationRoutes: Route[] = []
+export const NavigationRoutes: Route[] = [HomeRoute, SigninRoute, LogoutRoute, ResetRoute, ProfileRoute];
