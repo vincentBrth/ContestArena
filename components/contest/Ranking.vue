@@ -121,13 +121,21 @@ export default {
             points: 0,
           };
           if (value.likes) {
+            const playerMVP = value.mvp || null;
+            
             for (const [round_idx, player_likes] of Object.entries(
               value.likes
             )) {
               let round = this.rounds[round_idx];
               player_likes.forEach((element) => {
                 if (round.qualified && round.qualified.includes(element)) {
-                  player.points += round.points;
+                  let pointsToAdd = round.points;
+                
+                  if (playerMVP === element) {
+                    pointsToAdd = round.points * 2;
+                  }
+                  
+                  player.points += pointsToAdd;
                   player.good += 1;
                 }
               });

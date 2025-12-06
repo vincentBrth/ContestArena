@@ -53,8 +53,11 @@
                 _admin_on) &&
                 event_pool.includes(key)
                 " :liked="_is_watchable ? _likes.includes(key) : false" :qualified="event_qualified.includes(key)"
+              :mvp="_is_watchable ? _mvp === key : false"
+              :mvp_voting="round === '0' && ((!event_round.locked && !event_qualified.length) || _admin_on) && event_pool.includes(key)"
               :theme_default="theme.bg.light" :theme_text="theme.text.default" :theme_subtext="theme.text.lightest"
-              theme_img="object-cover h-[360px] w-[360px]" @action:vote="(v) => vote(v)"></ContestCard>
+              theme_img="object-cover h-[360px] w-[360px]" @action:vote="(v) => vote(v)" @action:mvp="(v) => setMVP(v)">
+            </ContestCard>
           </div>
         </section>
         <!-- ranking -->
@@ -114,7 +117,7 @@
                   v.numberify ? v.numberify : false,
                   v.confirm ? v.confirm : ''
                 )
-                "></ContestManagement>
+              "></ContestManagement>
           </div>
         </section>
         <!-- none-->
@@ -410,6 +413,24 @@ export default {
           }
         }
         return likes;
+      },
+    },
+    _mvp: {
+      get() {
+        let mvp = null;
+        if (this.$fire.auth.currentUser || this._watching) {
+          if (this._admin_on && !this._watching) {
+            return null;
+          } else {
+            let uid = this._watching
+              ? this.watching.uid
+              : this.$fire.auth.currentUser ? this.$fire.auth.currentUser.uid : null;
+            if (uid && this.event_players && this.event_players[uid] && this.event_players[uid].mvp) {
+              mvp = this.event_players[uid].mvp;
+            }
+          }
+        }
+        return mvp;
       },
     },
     _bingo_data: {
@@ -868,7 +889,7 @@ export default {
           if (confirm.length > 0 && !window.confirm(confirm)) {
             return;
           } else {
-            if (endpoint === "/" && value === {}) {
+            if (endpoint === "/" && (value === null || (typeof value === 'object' && Object.keys(value).length === 0))) {
               await this.$fire.database.ref(this.endpoint).remove();
             } else {
               await this.$fire.database
@@ -883,10 +904,90 @@ export default {
         console.error("not admin");
       }
     },
+    setMVP(key) {
+      let toasts = [];
+      if (this.$fire.auth.currentUser) {
+        // MVP uniquement au premier round (round 0)
+        if (this.round !== "0") {
+          toasts.push({
+            msg: "MVP can only be selected in the first round",
+            type: "error",
+          });
+        } else if ((!this._watching && !this.event_round.locked) || this._admin_on) {
+          try {
+            let endpoints = [];
+
+            if (this._admin_on) {
+              if (!this._watching) {
+                // Admin ne peut pas définir de MVP directement
+                toasts.push({
+                  msg: "Admin cannot set MVP",
+                  type: "error",
+                });
+                return;
+              } else {
+                endpoints.push(
+                  `${this.endpoint}/event/players/${this.watching.uid}/mvp`
+                );
+              }
+            } else {
+              this.$fire.database
+                .ref(
+                  `${this.endpoint}/event/players/${this.$fire.auth.currentUser.uid}/user_info`
+                )
+                .set(this.$store.getters["user/getUser"]);
+              endpoints.push(
+                `${this.endpoint}/event/players/${this.$fire.auth.currentUser.uid}/mvp`
+              );
+            }
+
+            // Vérifier que le candidat est dans les likes du round 0
+            const currentMVP = this._mvp;
+            let newMVP = null;
+
+            if (currentMVP === key) {
+              // Déselectionner le MVP
+              newMVP = null;
+            } else {
+              newMVP = key;
+            }
+
+            if (toasts.length < 1 && endpoints.length > 0) {
+              // Mettre à jour la base de données
+              endpoints.forEach((e) => {
+                this.$fire.database.ref(e).set(newMVP);
+              });
+            }
+          } catch (e) {
+            toasts.push({
+              msg: e.message || e,
+              type: "error",
+            });
+          }
+        } else {
+          toasts.push({
+            msg: "Round is locked",
+            type: "error",
+          });
+        }
+      } else {
+        toasts.push({
+          msg: "You need to be&nbsp;<a href='/identification' style='text-decoration: underline;'>logged</a>",
+        });
+      }
+
+      toasts.forEach((toast) => {
+        this.$toast.show(toast.msg, {
+          duration: toast.duration ? toast.duration : 1500,
+          type: toast.type,
+          className: "toast-theme",
+        });
+      });
+    },
 
     watch(player) {
       if (
-        !this.$fire.auth.currentUse ||
+        !this.$fire.auth.currentUser ||
         this.$fire.auth.currentUser.uid != player.uid ||
         this._admin_on
       ) {
